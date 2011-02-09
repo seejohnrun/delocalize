@@ -69,6 +69,22 @@ describe Translation do
     erb.result(binding.get_binding).should == "<li>your name is: john<br/>your name in reverse: nhoj</li>"
   end
 
+  it 'should be able to play with pluralization like a champ' do
+    content = "<li><t id='repo_count' count='\"3\"' yml='true'>one: %{count} repository\nother: %{count} repositories</t></li>"
+    de = Translation::Delocalizer.new(content)
+
+    de.delocalized_content.should == "<li><%= t('repo_count', :count => \"3\") %></li>"
+    de.stripped_translation.should == { 'repo_count' => { 'one' => '%{count} repository', 'other' => '%{count} repositories' } }
+  end
+
+  it 'should be able to use pluralization and autorecognize ids' do
+    content = "<li><t count='\"3\"' yml='true'>one: %{count} repository\nother: %{count} repositories</t></li>"
+    de = Translation::Delocalizer.new(content)
+
+    de.delocalized_content.should == "<li><%= t('count_repository_count', :count => \"3\") %></li>"
+    de.stripped_translation.should == { 'count_repository_count' => { 'one' => '%{count} repository', 'other' => '%{count} repositories' } }
+  end
+
 end
 
 # Used to make I18n able to translate

@@ -2,6 +2,10 @@ It's a pain to always develop with I18n - it makes it hard to search for things.
 
 __Under Development - not quite ready for use__
 
+---
+
+## Usage
+
 Template:
 
     <%- name = 'john' %>
@@ -14,7 +18,20 @@ Locale files:
       name_label: "Información:"
       my_name_is: "My name is %{their_name}"
 
-Result:
+---
 
-    Información:
-    my name is john
+## Pluralization
+
+Template:
+
+    <t id="repo_count" count="repo_count" yml="true"> # will change soon
+      one: You have one repository
+      other: You have %{count} repositories
+    </t>
+
+Locale files:
+
+    de:
+      repo_count:
+        one: sie haben ein repository
+        other: sie haben %{count} repositories

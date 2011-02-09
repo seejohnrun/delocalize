@@ -31,9 +31,10 @@ module Translation
         trans.attribute_nodes.each { |an| attrs[an.name] = an.text }
         # set up the id and text
         id = attrs.delete('id')
-        text = trans.text
+        text = attrs.delete('yml') == 'true' ? YAML::load(trans.text) : trans.text 
         # get the id from the content if we don't have one
-        id = text.strip.split(/\s/).slice(0, 3).join('_') if id.nil?
+        text_s = text.is_a?(Hash) ? text.values.join(' ') : text
+        id = text_s.downcase.split(/[^a-zA-Z0-9_]/).reject { |s| s.empty? }.slice(0, 3).join('_') if id.nil?
         @data[id] = text # store for real translation
         "<%= t('#{id}'#{attrs.map { |k, v| ", :#{k} => #{v}" }.join('')}) %>"
       end
