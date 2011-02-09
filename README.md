@@ -1,5 +1,7 @@
 It's a pain to always develop with I18n - it makes it hard to search for things.
 
+There's no reason you shouldn't be able to develop with your native language inline, and then extract the text out of your markup and into a YML file live, replacing the native segments with ERB translation calls.
+
 __Under Development - not quite ready for use__
 
 ---
