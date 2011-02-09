@@ -8,9 +8,8 @@ __Under Development - not quite ready for use__
 
 Template:
 
-    <%- name = 'john' %>
     <t id="name_label">Information:</t>
-    <t their_name="name">my name is %{their_name}</t>
+    <t their_name="'john'">my name is %{their_name}</t>
 
 Locale files:
 
