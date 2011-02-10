@@ -1,1 +1,1 @@
-require File.dirname(__FILE__) + '/../lib/translation'
+require File.dirname(__FILE__) + '/../lib/delocalize'

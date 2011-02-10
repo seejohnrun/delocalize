@@ -1,1 +1,6 @@
 *.yml
+.bundle
+*.swp
+*.swo
+*.gem
+Gemfile.lock
