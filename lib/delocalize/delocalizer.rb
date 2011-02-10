@@ -24,7 +24,7 @@ module Delocalize
     def delocalize
       @delocalized = @original.dup # don't be silly
       @delocalized.gsub!(/\<\s*t[^\/]+\/t\>/) do |tag|
-        ng = Nokogiri::parse(tag)
+        ng = Nokogiri::parse(tag) # TODO shouldn't really need nokogiri at all - kinda a waste
         trans = ng.css('t').first
         # get the text and ID
         attrs = {}
@@ -36,7 +36,7 @@ module Delocalize
         text_s = text.is_a?(Hash) ? text.values.join(' ') : text
         key = text_s.downcase.split(/[^a-zA-Z0-9_]/).reject { |s| s.empty? }.slice(0, 3).join('_') if key.nil?
         @data[key] = text # store for real translation
-        "<%= t('#{key}'#{attrs.map { |k, v| ", :#{k} => #{v}" }.join('')}) %>"
+        "<%= t('.#{key}'#{attrs.map { |k, v| ", :#{k} => #{v}" }.join('')}) %>"
       end
     end
 
