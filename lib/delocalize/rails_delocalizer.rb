@@ -17,22 +17,15 @@ module Delocalize
     def self.delocalize_template(template, args)
       de = Delocalize::Delocalizer.new(template.source)
 
-      prefix = args[1]
-      path = args[0]
-
-      paths = []
-      paths.concat prefix.split('/') unless prefix.nil?
-      paths << path
-      h = scoped_translation(de.stripped_translation, paths)
-
-      I18n.backend.store_translations 'en', h
+      paths = "#{args[0]}/#{args[1]}".split('/').compact.reverse # TODO separate
+      I18n.backend.store_translations natural_locale, scoped_translation(de.stripped_scoped_translation, paths)
+      I18n.backend.store_translations natural_locale, scoped_translation(de.stripped_base_translation, [])
+      
       template.instance_variable_set :'@source', de.delocalized_content
       template
     end
 
     private
-
-    DEFAULT_LOCALE = :en
 
     # This method puts an array from
     # [1, 2, 3] to
@@ -52,7 +45,7 @@ module Delocalize
     end
 
     def self.natural_locale
-      @nat_locale ||= DEFAULT_LOCALE
+      @nat_locale ||= I18n.default_locale
     end
 
   end

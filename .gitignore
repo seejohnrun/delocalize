@@ -4,3 +4,4 @@
 *.swo
 *.gem
 Gemfile.lock
+spec/sample/*.erb

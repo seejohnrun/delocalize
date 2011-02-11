@@ -3,14 +3,14 @@ require 'yaml'
 require 'i18n'
 require 'erb'
 
-describe Delocalize do
+describe Delocalize::Delocalizer do
 
   it 'should detect single Delocalizes with ids inline' do
     content = "<t key='hello_world'>hello world</t>"
     de = Delocalize::Delocalizer.new(content)
     # and verify
     de.delocalized_content.should == "<%= t('hello_world') %>"
-    de.stripped_translation.should == { 'hello_world' => 'hello world' }
+    de.stripped_base_translation.should == { 'hello_world' => 'hello world' }
   end
 
   it 'should be able to skip an id and autobuild it' do
@@ -18,7 +18,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
     # and verify
     de.delocalized_content.should == "<%= t('hello_world') %>"
-    de.stripped_translation.should == { 'hello_world' => 'hello world' }
+    de.stripped_base_translation.should == { 'hello_world' => 'hello world' }
   end
 
   it 'should be able to parse a Delocalize block in the middle of erb' do
@@ -26,7 +26,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
     # and verify
     de.delocalized_content.should == "<label> <%= t('name_label') %> </label>"
-    de.stripped_translation.should == { 'name_label' => 'Name' }
+    de.stripped_base_translation.should == { 'name_label' => 'Name' }
   end
 
   it 'should be ablt to keep variables around when moving a Delocalize - erb' do
@@ -34,7 +34,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
     # and verify
     de.delocalized_content.should == "<strong> <%= t('name_label', :name => name) %> </strong>"
-    de.stripped_translation.should == { 'name_label' => 'Your name is: %{name}' }
+    de.stripped_base_translation.should == { 'name_label' => 'Your name is: %{name}' }
   end
 
   it 'should be ablt to keep variables around when moving a Delocalize - string' do
@@ -42,7 +42,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
     # and verify
     de.delocalized_content.should == "<strong> <%= t('name_label', :name => \"name\") %> </strong>"
-    de.stripped_translation.should == { 'name_label' => 'Your name is: %{name}' }
+    de.stripped_base_translation.should == { 'name_label' => 'Your name is: %{name}' }
   end
 
   it 'should be able to deal with two Delocalize tags in the same document' do
@@ -50,7 +50,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
     # and verify
     de.delocalized_content.should == "<li><%= t('name', :name => name) %><br/><%= t('rname', :rname => name.reverse) %></li>"
-    de.stripped_translation.should == { 'name' => 'your name is: %{name}', 'rname' => 'your name in reverse: %{rname}' }
+    de.stripped_base_translation.should == { 'name' => 'your name is: %{name}', 'rname' => 'your name in reverse: %{rname}' }
   end
 
   it 'should be actually able to parse a generated template with I18n' do
@@ -58,7 +58,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
     # and try to actually run the Delocalize
     f = File.new('en.yml', 'w')
-    f.write YAML::dump('en' => de.stripped_translation)
+    f.write YAML::dump('en' => de.stripped_base_translation)
     f.close
     # load the Delocalize
     I18n.backend = I18n::Backend::Simple.new
@@ -74,7 +74,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
 
     de.delocalized_content.should == "<li><%= t('repo_count', :count => \"3\") %></li>"
-    de.stripped_translation.should == { 'repo_count' => { 'one' => '%{count} repository', 'other' => '%{count} repositories' } }
+    de.stripped_base_translation.should == { 'repo_count' => { 'one' => '%{count} repository', 'other' => '%{count} repositories' } }
   end
 
   it 'should be able to use pluralization and autorecognize ids' do
@@ -82,7 +82,7 @@ describe Delocalize do
     de = Delocalize::Delocalizer.new(content)
 
     de.delocalized_content.should == "<li><%= t('count_repository_count', :count => \"3\") %></li>"
-    de.stripped_translation.should == { 'count_repository_count' => { 'one' => '%{count} repository', 'other' => '%{count} repositories' } }
+    de.stripped_base_translation.should == { 'count_repository_count' => { 'one' => '%{count} repository', 'other' => '%{count} repositories' } }
   end
 
 end
