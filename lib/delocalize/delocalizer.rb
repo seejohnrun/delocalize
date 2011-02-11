@@ -41,7 +41,7 @@ module Delocalize
         text_s = text.is_a?(Hash) ? text.values.join(' ') : text
         key = text_s.downcase.split(/[^a-zA-Z0-9_]/).reject { |s| s.empty? }.slice(0, 3).join('_') if key.nil?
 
-        if key[0] == '.'
+        if key[0] == '.' || key[0] == 46
           @scoped_data[key[1..-1]] = text
         else
           @base_data[key] = text

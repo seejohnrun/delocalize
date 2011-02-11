@@ -14,7 +14,7 @@ describe Delocalize::RailsDelocalizer do
     begin
       c.render :action => 'temporary'
     rescue RuntimeError
-      c.response_body.first
+      c.response_body.is_a?(Array) ? c.response_body.first : c.response_body
     end
   end
 
