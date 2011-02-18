@@ -3,7 +3,7 @@ require 'yaml'
 require 'i18n'
 require 'erb'
 
-describe Delocalize::Delocalizer do
+describe Delocalize::Delocalizer, 'delocalizer bang tests' do
 
   it 'should be able to call delocalize and get back a different object' do
     content = 'hello'
@@ -19,7 +19,7 @@ describe Delocalize::Delocalizer do
 
 end
 
-describe Delocalize::Delocalizer do
+describe Delocalize::Delocalizer, 'delocalizer basic usage tests' do
 
   it 'should detect single Delocalizes with ids inline' do
     content = "<t key='hello_world'>hello world</t>"
@@ -102,8 +102,6 @@ describe Delocalize::Delocalizer do
   end
 
 end
-
-describe 
 
 # Used to make I18n able to translate
 class BindToMe

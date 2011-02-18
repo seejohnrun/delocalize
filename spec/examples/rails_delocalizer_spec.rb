@@ -4,18 +4,11 @@ require 'action_controller'
 
 describe Delocalize::RailsDelocalizer do
 
-  class Sample < ActionController::Base
-  end
-
   def test_render(code)
     file = File.open('spec/sample/temporary.html.erb', 'w') { |f| f.write code }
-    c = Sample.new
-    Sample.view_paths = File.dirname(__FILE__) + '/..'
-    begin
-      c.render :action => 'temporary'
-    rescue RuntimeError
-      c.response_body.is_a?(Array) ? c.response_body.first : c.response_body
-    end
+    view = ActionView::Base.new
+    view.view_paths = File.dirname(__FILE__) + '/..'
+    view.render(:file => 'sample/temporary')
   end
 
   before(:each) do
