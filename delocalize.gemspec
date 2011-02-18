@@ -7,6 +7,7 @@ spec = Gem::Specification.new do |s|
   s.add_development_dependency('rspec')
   s.add_dependency('nokogiri')
   s.add_dependency('activesupport')
+  s.add_development_dependency('actionpack')
   s.description = 'Write views in your native language without sacrificing i18n'
   s.email = 'john.crepezzi@gmail.com'
   s.files = Dir['lib/**/*.rb']

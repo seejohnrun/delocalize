@@ -15,13 +15,11 @@ module Delocalize
     end
 
     def self.delocalize_template(template, args)
-      de = Delocalize::Delocalizer.new(template.source)
+      de = Delocalize::Delocalizer.delocalize!(template.source)
 
       paths = "#{args[0]}/#{args[1]}".split('/').compact.reverse # TODO separate
       I18n.backend.store_translations natural_locale, scoped_translation(de.stripped_scoped_translation, paths)
       I18n.backend.store_translations natural_locale, scoped_translation(de.stripped_base_translation, [])
-      
-      template.instance_variable_set :'@source', de.delocalized_content
       template
     end
 

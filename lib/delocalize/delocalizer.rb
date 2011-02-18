@@ -5,11 +5,22 @@ module Delocalize
 
   class Delocalizer
 
+    def self.delocalize!(original)
+      obj = self.new(original)
+      obj.delocalize!
+      obj
+    end
+
+    def self.delocalize(original)
+      obj = self.new(original)
+      obj.delocalize
+      obj
+    end
+
     def initialize(original)
       @original = original
       @scoped_data = {}
       @base_data = {}
-      delocalize
     end
 
     def delocalized_content
@@ -24,10 +35,18 @@ module Delocalize
       @base_data
     end
 
+    def delocalize
+      do_delocalize(false)
+    end
+
+    def delocalize!
+      do_delocalize(true)
+    end
+
     private
 
-    def delocalize
-      @delocalized = @original.dup # don't be silly
+    def do_delocalize(destructive = false)
+      @delocalized = destructive ? @original : @original.dup
       @delocalized.gsub!(/<\s*t[^\/]+\/t>/) do |tag|
         ng = Nokogiri::parse(tag) # TODO shouldn't really need nokogiri at all - kinda a waste
         trans = ng.css('t').first
